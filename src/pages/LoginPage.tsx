@@ -15,7 +15,7 @@ const LoginPage = () => {
     try {
       setLoading(true);
       const response = await signin(values);
-      setUser(response);
+      setUser(response.data);
       message.success("Đăng nhập thành công");
       navigate("/project");
       //   navigate("/dashboard"); // Redirect after successful login

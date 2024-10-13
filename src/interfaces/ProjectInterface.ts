@@ -1,11 +1,14 @@
-import ProjectCategory from "./ProjectCategoryInterface";
 import Task from "./TaskInterface";
-import User from "./UserInterface";
 
-interface Project {
+export interface ProjectCategory {
+    id: number,
+    name: string
+}
+
+export interface ProjectDetail {
     tasks: Array<Task>,
-    members: Array<User>,
-    creator: User,
+    members: Array<ProjectMember>,
+    creator: ProjectCreator,
     id: number,
     projectName: string,
     description: string,
@@ -13,4 +16,25 @@ interface Project {
     alias: string
 }
 
-export default Project;
+export interface ProjectList {
+    members: Array<ProjectMember>,
+    creator: ProjectCreator,
+    id: number,
+    projectName: string,
+    description: string,
+    categoryId: number,
+    categoryName: string,
+    alias: string,
+    deleted: boolean
+}
+
+export interface ProjectMember {
+    userId: number,
+    name: string,
+    avatar: string
+}
+
+export interface ProjectCreator {
+    id: number,
+    name: string
+}

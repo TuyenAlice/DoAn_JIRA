@@ -1,25 +1,56 @@
-import { useEffect, useState } from "react";
-import { List, Button } from "antd";
-import { getAllProject } from "../services/project-service";
-import Project from "../interfaces/ProjectInterface";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "antd";
+import { getAllProject, getProjectCategory } from "../services/project-service";
+import { ProjectCategory, ProjectList } from "../interfaces/ProjectInterface";
 import JiaHeder from "../components/Header";
+import ProjectTable from "../components/ProjectTable";
 
 const ProjectPage = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<ProjectList[]>([]);
+  const [projectCats, setProjectCats] = useState<ProjectCategory[]>();
+  const hasLoaded = useRef(false);
+
+  const onLoad = async () => {
+    const promiseGetProjectCats = async (): Promise<any> => {
+      const response = await getProjectCategory();
+      return response;
+    };
+
+    const promiseGetAllProject = async (): Promise<any> => {
+      const response = await getAllProject();
+      return response;
+    };
+
+    Promise.all([promiseGetProjectCats(), promiseGetAllProject()]).then(
+      ([resProjectCats, resProjects]: any) => {
+        setProjectCats(resProjectCats.data);
+        setProjects(resProjects.data);
+        console.log(resProjectCats.data, resProjects.data);
+      }
+    );
+  };
+
+  const onDetail = (id: number) => {};
+
+  const onEdit = (id: number) => {};
+
+  const onDelete = (id: number) => {};
 
   useEffect(() => {
-    getAllProject().then(setProjects);
-  }, []);
-
+    if (!hasLoaded.current) {
+      onLoad();
+      hasLoaded.current = true;
+    }
+  }, [projects, projectCats]);
   return (
     <div>
-      <JiaHeder />;<h1>Projects</h1>
+      <h1>Projects</h1>
       <Button type="primary">Add Project</Button>
-      <List
-        dataSource={projects}
-        renderItem={(project: Project) => (
-          <List.Item>{project.projectName}</List.Item>
-        )}
+      <ProjectTable
+        data={projects}
+        onDetail={onDetail}
+        onEdit={onEdit}
+        onDelete={onDelete}
       />
     </div>
   );
