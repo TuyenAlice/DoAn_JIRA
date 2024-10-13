@@ -1,0 +1,40 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  // "compilerOptions": {
+  //   // ...rest of the template
+  //   "types": [
+  //     "node"
+  //   ],
+  //   "baseUrl": ".",
+  //   "paths": {
+  //     "@/*": [
+  //       "./src/*",
+  //       "./dist/*",
+  //       ""
+  //     ],
+  //     "components/*": [
+  //       "src/components/*"
+  //     ],
+  //     "consts/*": [
+  //       "src/consts/*"
+  //     ],
+  //     "pages/*": [
+  //       "src/pages/*"
+  //     ],
+  //     "services/*": [
+  //       "src/services/*"
+  //     ],
+  //     "styles/*": [
+  //       "src/styles/*"
+  //     ]
+  //   }
+  // }
+}
