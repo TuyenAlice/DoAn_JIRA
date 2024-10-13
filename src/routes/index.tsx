@@ -10,10 +10,10 @@ export const RouterConfig = () => {
             element: <LoginPage />,
             path: "/"
         },
-        // {
-        //     element: <SignupPage />,
-        //     path: "/signup"
-        // },
+        {
+            element: <SignupPage />,
+            path: "/signup"
+        },
         {
             element: <ProjectPage />,
             path: "/project"
