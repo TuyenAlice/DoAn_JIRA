@@ -5,11 +5,20 @@ import { getAllProject } from '../services/project-service';
 import Project from '../interfaces/ProjectInterface';
 
 const ProjectPage = () => {
-    const [projects, setProjects] = useState<Project[]>([]);
+    const [projects, setProjects] = useState<Project[]>();
+
+    const onLoad = async () => {
+        await getAllProject().then((response) => {
+            console.log(response.message);
+            setProjects(response.data);
+        });
+    };
 
     useEffect(() => {
-        getAllProject().then(setProjects);
-    }, []);
+        if (!projects) {
+            onLoad();
+        }
+    }, [projects]);
 
     return (
         <div>

@@ -8,5 +8,5 @@ export const signin = async (data: Account) => {
         "email": data.email,
         "password": data.password
     });
-    return response.data.content as User;
+    return { message: response.data.message as string, data: response.data.content as User };
 }

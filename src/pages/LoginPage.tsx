@@ -10,7 +10,10 @@ const LoginPage = () => {
     const [user, setUser] = useState<User>();
 
     const onFinish = async (values: Account) => {
-        await signin(values).then(setUser);
+        await signin(values).then((response) => {
+            console.log(response.message);
+            setUser(response.data);
+        });
     };
 
     useEffect(() => {
