@@ -12,6 +12,8 @@ const SignupPage = () => {
         await signup(values).then((response) => {
             console.log(response.message);
             setAccount(response.data);
+        }).catch((error) => {
+            alert(error.response.data.message);
         });
     };
 
