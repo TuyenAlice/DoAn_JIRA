@@ -1,26 +1,28 @@
-
-import { useEffect, useState } from 'react';
-import { List, Button } from 'antd';
-import { getAllProject } from '../services/project-service';
-import Project from '../interfaces/ProjectInterface';
+import { useEffect, useState } from "react";
+import { List, Button } from "antd";
+import { getAllProject } from "../services/project-service";
+import Project from "../interfaces/ProjectInterface";
+import JiaHeder from "../components/Header";
 
 const ProjectPage = () => {
-    const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
-    useEffect(() => {
-        getAllProject().then(setProjects);
-    }, []);
+  useEffect(() => {
+    getAllProject().then(setProjects);
+  }, []);
 
-    return (
-        <div>
-            <h1>Projects</h1>
-            <Button type="primary">Add Project</Button>
-            <List
-                dataSource={projects}
-                renderItem={(project: Project) => <List.Item>{project.projectName}</List.Item>}
-            />
-        </div>
-    );
+  return (
+    <div>
+      <JiaHeder />;<h1>Projects</h1>
+      <Button type="primary">Add Project</Button>
+      <List
+        dataSource={projects}
+        renderItem={(project: Project) => (
+          <List.Item>{project.projectName}</List.Item>
+        )}
+      />
+    </div>
+  );
 };
 
 export default ProjectPage;

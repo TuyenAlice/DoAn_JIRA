@@ -1,44 +1,112 @@
-import { Form, Input, Button } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { signin } from '../services/user-service';
-import User from "../interfaces/UserInterface"
-import Account from '../interfaces/AccountInterface';
+import { Form, Input, Button, message, Card, notification } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { signin } from "../services/user-service";
+import User from "../interfaces/UserInterface";
+import Account from "../interfaces/AccountInterface";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 const LoginPage = () => {
-    const navigate = useNavigate();
-    const [user, setUser] = useState<User>();
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-    const onFinish = async (values: Account) => {
-        await signin(values).then(setUser);
-    };
+  const onFinish = async (values: Account) => {
+    try {
+      setLoading(true);
+      const response = await signin(values);
+      setUser(response);
+      message.success("Đăng nhập thành công");
+      navigate("/project");
+      //   navigate("/dashboard"); // Redirect after successful login
+    } catch (error: any) {
+      notification.error({
+        message: "Đăng nhập thất bại",
+        description: error.response?.data?.message || "Đã có lỗi xảy ra",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    useEffect(() => {
-        if (user) {
-            console.log("User:", user);
-            localStorage.setItem("accessToken", user.accessToken);
-            // Navigate to dashboard or home page on successful login
-            navigate('/project');
-        }
-    }, [user, navigate]);
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("accessToken", user.accessToken);
+      navigate("/project");
+    }
+  }, [user, navigate]);
 
-    return (
-        <Form onFinish={onFinish}>
-            <Form.Item name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
-                <Input placeholder="Email" />
-            </Form.Item>
+  // foget pass
+  const handleRegisterRedirect = () => {
+    navigate("/dangky");
+  };
 
-            <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
-                <Input.Password placeholder="Password" />
-            </Form.Item>
+  return (
+    <Card
+      className="flex items-center justify-center min-h-screen bg-gray-100 p-6"
+      style={{ width: 400 }}
+    >
+      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-semibold text-center mb-6">Đăng Nhập</h2>
 
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Login
-                </Button>
-            </Form.Item>
+        <Form
+          name="login"
+          onFinish={onFinish}
+          layout="vertical"
+          className="space-y-4"
+        >
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              { required: true, message: "Vui lòng nhập email" },
+              { type: "email", message: "Email không đúng định dạng" }, // Email validation
+            ]}
+          >
+            <Input
+              placeholder="Email"
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              size="large"
+              className="rounded-lg"
+              autoComplete="email"
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Vui lòng nhập mật khẩu" }]}
+          >
+            <Input.Password
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              placeholder="Mật khẩu
+              "
+              size="large"
+              className="rounded-lg"
+              autoComplete="current-password"
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={loading} block>
+              {loading ? "Logging in..." : "Login"} {/* Show loading text */}
+            </Button>
+          </Form.Item>
+          <div
+            className="flex justify-between mt-4 text-center"
+            style={{ textAlign: "center" }}
+          >
+            <a
+              onClick={handleRegisterRedirect}
+              className="text-sm text-blue-500 hover:underline cursor-pointer"
+            >
+              Sign Up
+            </a>
+          </div>
         </Form>
-    );
+      </div>
+    </Card>
+  );
 };
 
 export default LoginPage;
