@@ -17,7 +17,7 @@ const LoginPage = () => {
       const response = await signin(values);
       setUser(response.data);
       message.success("Đăng nhập thành công");
-      navigate("/project");
+      //navigate("/project");
       //   navigate("/dashboard"); // Redirect after successful login
     } catch (error: any) {
       notification.error({
@@ -31,14 +31,15 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (user) {
-      localStorage.setItem("accessToken", user.accessToken);
+      // localStorage.setItem("accessToken", user.accessToken);
+      localStorage.setItem("user", JSON.stringify(user));
       navigate("/project");
     }
   }, [user, navigate]);
 
   // foget pass
   const handleRegisterRedirect = () => {
-    navigate("/dangky");
+    navigate("/signup");
   };
 
   return (
@@ -69,6 +70,7 @@ const LoginPage = () => {
               size="large"
               className="rounded-lg"
               autoComplete="email"
+              type="primary"
             />
           </Form.Item>
 
@@ -84,12 +86,19 @@ const LoginPage = () => {
               size="large"
               className="rounded-lg"
               autoComplete="current-password"
+              type="primary"
             />
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading} block>
-              {loading ? "Logging in..." : "Login"} {/* Show loading text */}
+            <Button
+              size="large"
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+              block
+            >
+              {loading ? "Logging in..." : "Đăng nhập"}{" "}
             </Button>
           </Form.Item>
           <div
@@ -100,7 +109,7 @@ const LoginPage = () => {
               onClick={handleRegisterRedirect}
               className="text-sm text-blue-500 hover:underline cursor-pointer"
             >
-              Sign Up
+              Đăng ký
             </a>
           </div>
         </Form>
