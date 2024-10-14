@@ -44,6 +44,15 @@ const ProjectTable: React.FC<ProjectTableProps> = ({
   // Define columns for the table
   const columns: ColumnsType<ProjectList> = [
     {
+      title: "id",
+      dataIndex: "id",
+      key: "id",
+
+      sorter: (a, b) => a.id - b.id,
+      sortDirections: ["descend"],
+      width: 150,
+    },
+    {
       title: "Project Name",
       dataIndex: "projectName",
       key: "projectName",
