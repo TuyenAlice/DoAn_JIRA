@@ -16,6 +16,16 @@ export interface ProjectDetail {
     alias: string
 }
 
+export interface ProjectDetailDto {
+    id: number,
+    creator: number,
+    projectName: string | "",
+    description: string | "",
+    categoryId: number,
+    alias: string,
+    deleted?: boolean
+}
+
 export interface ProjectList {
     members: Array<ProjectMember>,
     creator: ProjectCreator,

@@ -1,132 +1,170 @@
 import React, { useEffect } from "react";
 import { Modal, Form, Input, Select } from "antd";
-import { ProjectCategory, ProjectDetail } from "../interfaces/ProjectInterface";
+import { ProjectCategory, ProjectDetail, ProjectDetailDto } from "../interfaces/ProjectInterface";
 import TextArea from "antd/es/input/TextArea";
+import User from "../interfaces/UserInterface";
 const { Option } = Select;
 
 interface ProjectDetailProps {
-  isCreate: boolean;
-  isOpen: boolean;
-  data: ProjectDetail | undefined;
-  categories: ProjectCategory[] | undefined;
-  onClose: () => void;
-  onSubmit: (values: ProjectDetail) => void;
+    isCreate: boolean;
+    isOpen: boolean;
+    data: ProjectDetail | undefined;
+    categories: ProjectCategory[] | undefined;
+    users: User[] | undefined;
+    onClose: () => void;
+    onSubmit: (values: ProjectDetailDto) => void;
 }
 
 const ProjectDetai: React.FC<ProjectDetailProps> = ({
-  isOpen,
-  isCreate,
-  data,
-  categories,
-  onClose,
-  onSubmit,
+    isOpen,
+    isCreate,
+    data,
+    categories,
+    users,
+    onClose,
+    onSubmit,
 }) => {
-  const [form] = Form.useForm();
-  let projectCategories: any[] = [];
+    const [form] = Form.useForm();
 
-  const onCategoryChange = () => {};
+    const onCategoryChange = () => { };
 
-  useEffect(() => {
-    if (data) {
-      form.setFieldsValue(data);
-      console.log(data);
-    }
-  }, [data, categories, form]);
+    let projectDetailInfo = {} as ProjectDetailDto;
 
-  return (
-    <>
-      <Modal
-        title="ProjectDetail"
-        centered
-        open={isOpen}
-        onCancel={onClose}
-        onOk={form.submit}
-        okText={isCreate ? "Create" : "Update"}
-        cancelText="Cancel"
-        okButtonProps={{ autoFocus: true, htmlType: "submit" }}
-        width={1000}
-        destroyOnClose
-      >
-        <Form
-          onFinish={onSubmit}
-          form={form}
-          layout="vertical"
-          name="projectDetailForm"
-        >
-          {/* Project name */}
-          <Form.Item
-            label="Project Name"
-            name="projectName"
-            rules={[
-              { required: true, message: "Please input your project name!" },
-            ]}
-          >
-            <Input placeholder="Project Name" />
-          </Form.Item>
+    const mapper = (data: ProjectDetail): ProjectDetailDto => ({
+        id: data.id,
+        categoryId: data.projectCategory.id,
+        creator: data.creator.id,
+        description: data.description,
+        projectName: data.projectName,
+        alias: data.alias
+    });
 
-          {/* Project alias */}
-          <Form.Item
-            label="Project alias"
-            name="alias"
-            rules={[
-              { required: true, message: "Please input your project alias!" },
-            ]}
-          >
-            <Input placeholder="Project alias" />
-          </Form.Item>
+    useEffect(() => {
+        if (data) {
+            projectDetailInfo = mapper(data);
+            form.setFieldsValue(projectDetailInfo);
+            console.log(projectDetailInfo);
+        }
 
-          {/* Project description */}
-          <Form.Item
-            label="Project description"
-            name="description"
-            rules={[
-              {
-                required: true,
-                message: "Please input your project description!",
-              },
-            ]}
-          >
-            <TextArea rows={3} placeholder="Project description" />
-          </Form.Item>
+        if (isCreate) {
+            form.resetFields();
+        }
 
-          {/* Project category */}
-          <Form.Item
-            label="Project category"
-            name="projectCategory"
-            rules={[
-              {
-                required: true,
-                message: "Please input your project category!",
-              },
-            ]}
-          >
-            <Select
-              style={{ width: 120 }}
-              onChange={onCategoryChange}
-              {...projectCategories.map((item) => {
-                console.log(item);
+    }, [data, categories, form, isCreate]);
 
-                return (
-                  <Option
-                    key={item.value}
-                    value={item.value}
-                    label={item.label}
-                  >
-                    {item.label}
-                  </Option>
-                );
-              })}
-            ></Select>
-          </Form.Item>
-        </Form>
-        <Select
-          style={{ width: 120 }}
-          onChange={onCategoryChange}
-          options={[]}
-        ></Select>
-      </Modal>
-    </>
-  );
+    // Render project category options
+    const renderCategoryOptions = () => {
+        if (categories) {
+            return categories.map((category) => (
+                <Option key={category.id} value={category.id}>
+                    {category.name}
+                </Option>
+            ));
+        }
+        return null; // Return null if no categories are available
+    };
+
+    const renderUserOptions = () => {
+        if (users) {
+            return users.map((user) => (
+                <Option key={user.id} value={user.id}>
+                    {user.name}
+                </Option>
+            ));
+        }
+        return null; // Return null if no categories are available
+    };
+
+    return (
+        <>
+            <Modal
+                title="ProjectDetail"
+                centered
+                open={isOpen}
+                onCancel={onClose}
+                onOk={form.submit}
+                okText={isCreate ? "Create" : "Update"}
+                cancelText="Cancel"
+                okButtonProps={{ autoFocus: true, htmlType: "submit" }}
+                width={1000}
+                destroyOnClose={true}
+            >
+                <Form
+                    onFinish={onSubmit}
+                    form={form}
+                    layout="vertical"
+                    name="projectDetailForm"
+                >
+                    {/* Project id */}
+                    <Form.Item
+                        hidden={true}
+                        label="Project Name"
+                        name="id"
+                    >
+                        <Input placeholder="Project Name" />
+                    </Form.Item>
+
+                    {/* Project name */}
+                    <Form.Item
+                        label="Project Name"
+                        name="projectName"
+                        rules={[
+                            { required: true, message: "Please input your project name!" },
+                        ]}
+                    >
+                        <Input placeholder="Project Name" />
+                    </Form.Item>
+
+                    {/* Project description */}
+                    <Form.Item
+                        label="Project description"
+                        name="description"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your project description!",
+                            },
+                        ]}
+                    >
+                        <TextArea rows={3} placeholder="Project description" />
+                    </Form.Item>
+
+                    {/* Project category */}
+                    <Form.Item
+                        label="Project Category"
+                        name="categoryId"
+                        rules={[
+                            { required: true, message: "Please select your project category!" },
+                        ]}
+                    >
+                        <Select
+                            placeholder="Select Project Category"
+                            style={{ width: "100%" }}
+                        >
+                            {renderCategoryOptions()} {/* Render category options */}
+                        </Select>
+                    </Form.Item>
+
+                    {/* Project creator */}
+                    <Form.Item
+                        hidden={isCreate}
+                        label="Creator"
+                        name="creator"
+                        rules={[
+                            { required: !isCreate, message: "Please select your project creator!" },
+                        ]}
+                    >
+                        <Select
+                            placeholder="Select Project Category"
+                            style={{ width: "100%" }}
+                        >
+                            {renderUserOptions()} {/* Render category options */}
+                        </Select>
+                    </Form.Item>
+                </Form>
+            </Modal>
+        </>
+    );
 };
 
 export default ProjectDetai;
