@@ -111,6 +111,7 @@ const ProjectTable: React.FC<ProjectTableProps> = ({
       dataIndex: "members",
       key: "members",
       render: (_, record) => (
+
         <Avatar.Group
           size="large"
           max={{
@@ -118,6 +119,11 @@ const ProjectTable: React.FC<ProjectTableProps> = ({
             style: { color: "#f56a00", backgroundColor: "#fde3cf" },
           }}
         >
+          <Tooltip key={"111"} title={"+"} placement="top">
+            <Avatar
+              style={{ backgroundColor: "#87d068" }}
+            >+</Avatar>
+          </Tooltip>
           {record.members.map((member) => (
             <Tooltip key={member.userId} title={member.name} placement="top">
               <Avatar
@@ -127,6 +133,7 @@ const ProjectTable: React.FC<ProjectTableProps> = ({
               />
             </Tooltip>
           ))}
+
         </Avatar.Group>
       ),
     },
