@@ -1,9 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, Layout, Typography, Card } from "antd";
-import { getAllProject, getProjectCategory } from "../services/project-service";
-import { ProjectCategory, ProjectList } from "../interfaces/ProjectInterface";
+import {
+  getAllProject,
+  getProjectCategory,
+  getProjectDetail,
+} from "../services/project-service";
+import {
+  ProjectCategory,
+  ProjectDetail,
+  ProjectList,
+} from "../interfaces/ProjectInterface";
 import JiraHeader from "../components/Header"; // Sửa lỗi đánh máy ở tên
 import ProjectTable from "../components/ProjectTable";
+import ProjectDetai from "../components/ProjectDetail";
 import MenuBar from "../components/MenuBar";
 
 const { Header, Sider, Content } = Layout;
@@ -12,6 +21,9 @@ const { Title } = Typography;
 const ProjectPage = () => {
   const [projects, setProjects] = useState<ProjectList[]>([]);
   const [projectCats, setProjectCats] = useState<ProjectCategory[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isCreateMode, setIsCreateMode] = useState<boolean>(false);
+  const [selectedProject, setSelectedProject] = useState<ProjectDetail>();
   const hasLoaded = useRef(false);
 
   const onLoad = async () => {
@@ -33,17 +45,37 @@ const ProjectPage = () => {
     );
   };
 
-  const onDetail = (id: number) => {};
-  const onEdit = (id: number) => {};
+  const onDetail = async (id: number) => {
+    await getProjectDetail(id)
+      .then((response) => {
+        setSelectedProject(response.data);
+        setIsModalOpen(true);
+        setIsCreateMode(false);
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+
+  const onUpdate = (data: ProjectDetail) => {
+    setIsModalOpen(false);
+    setSelectedProject(undefined);
+    console.log("updated", data);
+  };
+
   const onDelete = (id: number) => {};
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedProject(undefined);
+  };
 
   useEffect(() => {
     if (!hasLoaded.current) {
       onLoad();
       hasLoaded.current = true;
     }
-  }, []);
-
+  }, [projects, projectCats]);
   return (
     <Layout className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -85,8 +117,16 @@ const ProjectPage = () => {
             <ProjectTable
               data={projects}
               onDetail={onDetail}
-              onEdit={onEdit}
+              onEdit={onDetail}
               onDelete={onDelete}
+            />
+            <ProjectDetai
+              data={selectedProject}
+              categories={projectCats}
+              isCreate={isCreateMode}
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              onSubmit={onUpdate}
             />
           </Content>
         </Layout>
