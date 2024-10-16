@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Table,
   Button,
@@ -7,9 +7,7 @@ import {
   Popconfirm,
   Avatar,
   Tooltip,
-  Input,
-  Modal,
-  Select,
+  Input
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
@@ -31,12 +29,11 @@ const ProjectTable: React.FC<ProjectTableProps> = ({
   // State to manage search text and modal visibility
   const [searchText, setSearchText] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
-
-
 
   // Function to handle the search
   const handleSearch = (selectedKeys: string[], confirm: () => void) => {
+    console.log(searchText);
+    console.log(isModalOpen);
     setSearchText(selectedKeys[0]);
     confirm(); // Call the confirm function to apply the filter
   };

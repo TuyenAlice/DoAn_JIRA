@@ -5,7 +5,6 @@ import {
   ProjectDetailDto,
 } from "../interfaces/ProjectInterface";
 import apiClient from "./api-client";
-import { User } from "../interfaces/UserInterface";
 import { TaskDetail } from "../interfaces/TaskInterface";
 
 // getAllProject

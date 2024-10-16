@@ -26,8 +26,6 @@ const ProjectDetai: React.FC<ProjectDetailProps> = ({
 }) => {
     const [form] = Form.useForm();
 
-    const onCategoryChange = () => { };
-
     let projectDetailInfo = {} as ProjectDetailDto;
 
     const mapper = (data: ProjectDetail): ProjectDetailDto => ({
