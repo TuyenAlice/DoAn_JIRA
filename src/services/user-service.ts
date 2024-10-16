@@ -1,6 +1,6 @@
 import apiClient from "./api-client";
 import Account from "../interfaces/AccountInterface"
-import User from "../interfaces/UserInterface"
+import { User } from "../interfaces/UserInterface"
 
 // signin
 export const signin = async (data: Account) => {

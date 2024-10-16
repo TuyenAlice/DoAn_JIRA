@@ -5,7 +5,8 @@ import {
   ProjectDetailDto,
 } from "../interfaces/ProjectInterface";
 import apiClient from "./api-client";
-import User from "../interfaces/UserInterface";
+import { User } from "../interfaces/UserInterface";
+import { TaskDetail } from "../interfaces/TaskInterface";
 
 // getAllProject
 export const getAllProject = async () => {
@@ -80,58 +81,11 @@ export const deleteProject = async (id: number) => {
   };
 };
 
-// API call to assign user to a project
-export const addUserToProject = async (
-  projectId: number,
-  userId: string
-): Promise<User> => {
-  try {
-    const token = localStorage.getItem("TOKEN");
-
-    if (!token) {
-      throw new Error("Authorization token not found");
-    }
-
-    const response = await apiClient.post(`/Project/assignUserProject`, {
-      projectId,
-      userId,
-    });
-
-    return response.data.content as User;
-  } catch (error: any) {
-    if (error.response) {
-      console.error("API error:", error.response.data);
-      throw new Error(
-        error.response.data.message || "Failed to add user to project"
-      );
-    } else if (error.request) {
-      console.error("Network error:", error.request);
-      throw new Error("Network error occurred. Please try again later.");
-    } else {
-      console.error("Error:", error.message);
-      throw new Error("An unknown error occurred.");
-    }
-  }
-};
-//GetUser
-// GetUser function to fetch a user by ID
-export const GetUser = async () => {
-  try {
-    const response = await apiClient.get(`Project/assignUserProject`, {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("TOKEN"), // Use correct token retrieval
-      },
-    });
-
-    // Ensure the API returns a structure that matches this
-    const { message, content } = response.data;
-
-    return {
-      message: message as string,
-      data: content as User[], // Assuming User is your type/interface for user data
-    };
-  } catch (error) {
-    console.error("Failed to fetch users:", error);
-    throw error; // Rethrow the error to handle it in the calling function
-  }
-};
+// updateTaskStatus
+export const updateTaskStatus = async (task: TaskDetail) => {
+  const response = await apiClient.put('/Project/updateStatus', {
+    taskId: task.taskId,
+    statusId: task.statusId
+  });
+  return { message: response.data.message as string, data: response.data.content };
+}

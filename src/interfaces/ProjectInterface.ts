@@ -1,4 +1,4 @@
-import Task from "./TaskInterface";
+import { Task } from "./TaskInterface"
 
 export interface ProjectCategory {
     id: number,
@@ -6,7 +6,7 @@ export interface ProjectCategory {
 }
 
 export interface ProjectDetail {
-    tasks: Array<Task>,
+    lstTask: Array<Task>,
     members: Array<ProjectMember>,
     creator: ProjectCreator,
     id: number,

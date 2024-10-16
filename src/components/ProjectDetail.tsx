@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Modal, Form, Input, Select } from "antd";
 import { ProjectCategory, ProjectDetail, ProjectDetailDto } from "../interfaces/ProjectInterface";
 import TextArea from "antd/es/input/TextArea";
-import User from "../interfaces/UserInterface";
+import { User } from "../interfaces/UserInterface";
 const { Option } = Select;
 
 interface ProjectDetailProps {

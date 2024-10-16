@@ -2,7 +2,7 @@ import { Form, Input, Button, message, Card, notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { signin } from "../services/user-service";
-import User from "../interfaces/UserInterface";
+import { User } from "../interfaces/UserInterface";
 import Account from "../interfaces/AccountInterface";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
@@ -17,8 +17,6 @@ const LoginPage = () => {
       const response = await signin(values);
       setUser(response.data);
       message.success("Đăng nhập thành công");
-      //navigate("/project");
-      //   navigate("/dashboard"); // Redirect after successful login
     } catch (error: any) {
       notification.error({
         message: "Đăng nhập thất bại",
@@ -31,7 +29,6 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (user) {
-      // localStorage.setItem("accessToken", user.accessToken);
       localStorage.setItem("user", JSON.stringify(user));
       navigate("/project");
     }

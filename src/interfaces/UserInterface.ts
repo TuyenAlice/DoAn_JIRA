@@ -1,4 +1,4 @@
-interface User {
+export interface User {
     id: number,
     email: string,
     avatar: string,
@@ -7,4 +7,9 @@ interface User {
     accessToken: string
 }
 
-export default User;
+export interface Assignee {
+    id: string,
+    avatar: string,
+    name: string,
+    alias: string
+}

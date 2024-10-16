@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Button, Popover } from "antd";
 import { useNavigate } from "react-router-dom";
-import User from "../interfaces/UserInterface"; // Ensure this path is correct
+import { User } from "../interfaces/UserInterface"; // Ensure this path is correct
 
 const JiraHeader: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);

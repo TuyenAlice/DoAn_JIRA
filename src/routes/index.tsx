@@ -2,7 +2,7 @@ import { useRoutes } from "react-router-dom";
 import { LoginTemplate } from "../layout/LoginTemplate";
 import ProjectPage from "../pages/ProjectPage";
 import SignupPage from "../pages/SignupPage";
-import KanbanPage from "../pages/KanbanDashBoard";
+import KanbanPage from "../pages/KanbanPage";
 
 export const RouterConfig = () => {
   const routes = useRoutes([
@@ -18,10 +18,10 @@ export const RouterConfig = () => {
       element: <ProjectPage />,
       path: "/project",
     },
-    // {
-    //     element: <KanbanPage />,
-    //     path: "/dashboard"
-    // },
+    {
+      element: <KanbanPage />,
+      path: "/dashboard"
+    },
   ]);
   return routes;
 };

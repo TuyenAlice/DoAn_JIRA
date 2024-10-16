@@ -37,9 +37,8 @@ const MenuBar = () => {
 
   return (
     <div
-      className={`bg-gray-800 ${
-        collapsed ? "w-16" : "w-64"
-      } transition-all duration-300`}
+      className={`bg-gray-800 ${collapsed ? "w-16" : "w-64"
+        } transition-all duration-300`}
     >
       <div className="flex justify-between items-center p-4 text-white">
         <span className="text-xl font-bold">Logo</span>
@@ -54,7 +53,6 @@ const MenuBar = () => {
         defaultSelectedKeys={["1"]}
         mode="inline"
         theme="dark"
-        inlineCollapsed={collapsed}
         items={menuItems.map((item) => ({
           key: item.key,
           icon: item.icon,
