@@ -5,6 +5,7 @@ import { Row, Col, Card, Typography } from 'antd';
 import { getAllStatus } from '../services/status-service';
 import { TaskDetail, TaskStatus } from '../interfaces/TaskInterface';
 import { getProjectDetail, updateTaskStatus } from '../services/project-service';
+import { useSearchParams } from 'react-router-dom';
 
 const { Title } = Typography;
 
@@ -12,12 +13,10 @@ const { Title } = Typography;
 const KanbanDashboard = () => {
     let projectId: any = {};
     const [columns, setColumns] = useState<any>([]);
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
-
-        projectId = JSON.parse(localStorage.getItem("project-id") || "") as number;
-        console.log(projectId);
-
+        projectId = Number.parseInt(searchParams.get('projectId')!);
         let tasksByStatus: any = {};
 
         getProjectDetail(projectId).then((response) => {

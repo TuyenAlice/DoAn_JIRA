@@ -4,7 +4,7 @@ import { signup } from "../services/user-service";
 import Account from "../interfaces/AccountInterface";
 import SignupForm from "../components/SignupForm";
 import { Layout, notification } from "antd";
-const { Header, Footer, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 const SignupPage = () => {
     const navigate = useNavigate();
@@ -13,15 +13,6 @@ const SignupPage = () => {
         width: window.innerWidth,
         height: window.innerHeight,
     });
-
-    // const onSignup = async (values: Account) => {
-    //     await signup(values).then((response) => {
-    //         console.log(response.message);
-    //         setAccount(response.data);
-    //     }).catch((error) => {
-    //         alert(error.response.data.message);
-    //     });
-    // };
 
     const onSignup = async (values: Account) => {
         await signup(values)

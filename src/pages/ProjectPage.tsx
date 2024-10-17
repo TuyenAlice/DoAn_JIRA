@@ -76,14 +76,7 @@ const ProjectPage = () => {
     };
 
     const gotoKanban = async (id: number) => {
-        await getProjectDetail(id)
-            .then((response) => {
-                localStorage.setItem("project-id", JSON.stringify(response.data.id));
-                navigate("/dashboard");
-            })
-            .catch((error) => {
-                alert(error.response.data.message);
-            });
+        navigate(`/dashboard?projectId=${id}`);
     };
 
     const onCreate = () => {
@@ -97,7 +90,7 @@ const ProjectPage = () => {
         if (isCreateMode) {
             data.creator = logonUser.id;
             await createProjectAuthorize(data)
-                .then((response) => {
+                .then(() => {
                     setIsCreateMode(false);
                 })
                 .catch((error) => {
@@ -105,7 +98,7 @@ const ProjectPage = () => {
                 });
         } else {
             await updateProject(data)
-                .then((response) => {
+                .then(() => {
                     setIsCreateMode(false);
                 })
                 .catch((error) => {
@@ -117,7 +110,7 @@ const ProjectPage = () => {
 
     const onDelete = async (id: number) => {
         await deleteProject(id)
-            .then((response) => {
+            .then(() => {
                 onLoad();
             })
             .catch((error) => {
